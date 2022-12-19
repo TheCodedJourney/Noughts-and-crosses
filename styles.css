@@ -1,0 +1,77 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: #a8dadc;
+    background-color: #1d3557;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+}
+
+main {
+    height: 60%;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1.6rem;
+}
+
+.messages {
+    text-align: center;
+}
+
+.game-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 4rem);
+    grid-template-rows: repeat(3, 4rem);
+    position: relative;
+    padding: 4rem 0;
+    border-radius: 3px;
+}
+
+.box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #a8dadc;
+    font-weight: 700;
+    font-size: 2rem;
+}
+
+.reset-button {
+    color: #1d3557;
+    margin: 10px;
+    padding: 0.75rem 1.5rem;
+    border-radius: 7px;
+    background-color: #a8dadc;
+    cursor: pointer;
+    text-align: center;
+}
+
+.turn-box {
+    color: #1d3557;
+    margin: 10px;
+    padding: 0.75rem 1.5rem;
+    border-radius: 7px;
+    background-color: #a8dadc;
+    cursor: pointer;
+    text-align: center;
+}
+
+.score-counter {
+    color: #1d3557;
+    margin: 10px;
+    padding: 0.75rem 1.5rem;
+    border-radius: 7px;
+    background-color: #a8dadc;
+    cursor: pointer;
+    text-align: center;
+}
