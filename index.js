@@ -53,7 +53,9 @@ const checkWinner = (player) => {
     turn.textContent = `${name} Wins!!`;
     game.isWon = true;
     player.score++;
-    scoreCounter.textContent = `Player 1 > ${players[0].score} - ${players[1].score} < Player 2`;
+    scoreCounter.textContent = `${players[0].name} > ${players[0].score}`
+      + ` - `
+      + `${players[1].score} < ${players[1].name}`;
   }
 
   if (boxes.every(x => x.textContent) && !game.isWon) {
@@ -83,9 +85,9 @@ boxes.forEach(x => {
 });
 
 reset.addEventListener('click', () => {
-  boxes.forEach(x => x.textContent = undefined);
+  boxes.forEach(x => x.textContent = '');
   game.turn = 0;
-  turn.textContent = `${players[0].name}'s turn`;
+  turn.textContent = `${players[game.turn].name}'s turn`;
   game.isWon = false;
   players.forEach(x=> x.plots = []);
 });
