@@ -1,110 +1,93 @@
-const boxes = [...Array(9)].map((_, i)=>document.getElementById(`${i}`));
+const boxes = [...Array(9)].map((_, i) => document.getElementById(`${i}`));
+const reset = document.getElementById('reset');
+const scoreCounter = document.getElementById('score-counter');
+const turn = document.getElementById('turn');
 
-const reset = document.getElementById("reset");
-const scoreCounter = document.getElementById("score-counter");
-
-let turn = document.getElementById("turn");
+const game = {
+  isWon: false,
+  turn: 0
+}
 
 const players = [
   {
     id: 0,
-    name: "Player 1",
+    name: 'Player 1',
     score: 0,
-    avatar: "",
-    colour: "",
+    mark: 'X',
+    avatar: '',
+    colour: '',
+    plots: []
   },
   {
     id: 1,
-    name: "Player 2",
+    name: 'Player 2',
     score: 0,
-    avatar: "",
-    colour: "",
+    mark: 'O',
+    avatar: '',
+    colour: '',
+    plots: []
   }
-]
+];
 
-const xArray = [];
-const oArray = [];
-
-let gameIsWon = false;
-
-const isWin = (arr, pArray) => {
-  for (const x of arr) {
-    if (!pArray.includes(x)) {
+const isWin = (winArrLine, plots) => {
+  for (const x of winArrLine) {
+    if (!plots.includes(x)) {
       return false;
     }
   }
   return true;
-}
+};
 
-const checkWinner = (pArray) => {
+const checkWinner = (player) => {
+  const { plots, name } = player;
   if (
-    (isWin(["0", "1", "2"], xArray)) ||
-    (isWin(["3", "4", "5"], xArray)) ||
-    (isWin(["6", "7", "8"], xArray)) ||
-    (isWin(["0", "3", "6"], xArray)) ||
-    (isWin(["1", "4", "7"], xArray)) ||
-    (isWin(["2", "5", "8"], xArray)) ||
-    (isWin(["0", "4", "8"], xArray)) ||
-    (isWin(["6", "4","2"], xArray))
+    (isWin(['0', '1', '2'], plots)) ||
+    (isWin(['3', '4', '5'], plots)) ||
+    (isWin(['6', '7', '8'], plots)) ||
+    (isWin(['0', '3', '6'], plots)) ||
+    (isWin(['1', '4', '7'], plots)) ||
+    (isWin(['2', '5', '8'], plots)) ||
+    (isWin(['0', '4', '8'], plots)) ||
+    (isWin(['6', '4', '2'], plots))
   ) {
-    turn.textContent = "Player 1 Wins!!";
-    gameIsWon = true;
-    players[0].score+= 1 ;
-    scoreCounter.textContent = `Player 1 > ${players[0].score} - ${players[1].score} < Player 2`;
-    }
-
-if (
-    (isWin(["0", "1", "2"], oArray)) ||
-    (isWin(["3", "4", "5"], oArray)) ||
-    (isWin(["6", "7", "8"], oArray)) ||
-    (isWin(["0", "3", "6"], oArray)) ||
-    (isWin(["1", "4", "7"], oArray)) ||
-    (isWin(["2", "5", "8"], oArray)) ||
-    (isWin(["0", "4", "8"], oArray)) ||
-    (isWin(["6", "4","2"], oArray))
-  ) {
-    turn.textContent = "Player 2 Wins!!";
-    gameIsWon = true;
-    players[1].score++;
-    scoreCounter.textContent = `Player 1 > ${players[0].score} - ${players[1].score} < Player 2`;
+    turn.textContent = `${name} Wins!!`;
+    game.isWon = true;
+    player.score++;
+    scoreCounter.textContent = `${players[0].name} > ${players[0].score}`
+      + ` - `
+      + `${players[1].score} < ${players[1].name}`;
   }
 
-  if (boxes.every(x=>x.textContent) && !gameIsWon) {
-    turn.textContent = "Draw!!";
-  }
-}
-
-
-
-const changeTurn = (turn) => {
-  if (turn.textContent === `${players[0].name}'s turn`) {
-    turn.textContent = `${players[1].name}'s turn`;
-  } else {
-    turn.textContent = `${players[0].name}'s turn`;
+  if (boxes.every(x => x.textContent) && !game.isWon) {
+    turn.textContent = 'Draw!!';
   }
 };
 
+const changeTurn = (turn) => {
+  const nextPlayer = (game.turn + 1) % players.length;
+  game.turn = nextPlayer;
+  turn.textContent = `${players[nextPlayer].name}'s turn`;
+};
+
 boxes.forEach(x => {
-  x.addEventListener("click", () => {
+  x.addEventListener('click', () => {
+    if (game.isWon) {
+      return;
+    }
     if (!x.textContent) {
-      if (turn.textContent === `${players[0].name}'s turn`) {
-        x.textContent = "X";
-        xArray.push(x.id);
-      } else {
-        x.textContent = "O";
-        oArray.push(x.id);
-      }
+      const player = players[game.turn];
+      x.textContent = player.mark;
+      player.plots.push(x.id);
       changeTurn(turn);
-      checkWinner()
+      players.forEach(x => checkWinner(x));
     }
   });
-})
+});
 
-reset.addEventListener("click", () => {
-  boxes.forEach(x => x.textContent = undefined);
-  turn.textContent = `${players[0].name}'s turn`;
-  gameIsWon = false;
-  xArray.splice(0, xArray.length);
-  oArray.splice(0, oArray.length);
-  console.log('im here')
+reset.addEventListener('click', () => {
+  boxes.forEach(x => x.textContent = '');
+  game.turn = 0;
+  turn.textContent = `${players[game.turn].name}'s turn`;
+  game.isWon = false;
+  players.forEach(x=> x.plots = []);
 });
