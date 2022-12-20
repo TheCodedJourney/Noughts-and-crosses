@@ -42,6 +42,7 @@ main {
     align-items: center;
     justify-content: center;
     border: 1px solid #a8dadc;
+    margin: -0.5px;
     font-weight: 700;
     font-size: 2rem;
 }
